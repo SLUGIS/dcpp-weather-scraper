@@ -42,4 +42,6 @@ file_path_name = os.path.join(save_path, 'Observations_' + date_str + ".obs")
 
 # open file for writing, creates file if not found
 f = open(file_path_name, 'w')
-f.write(str(data))
+
+for row in data:
+  f.write(str(row) + '\n')
