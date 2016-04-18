@@ -20,6 +20,7 @@ def parse_wind_speed(speed):
   val = round(float(speed) * 2.23694, 0)
   return str(int(val))
 
+
 # rounds wind direction degrees and removes decimal places
 def parse_wind_dir(dir):
   val = round(float(dir), 0)
@@ -91,11 +92,25 @@ if not os.path.exists(folder_path):
 
 web_data = parse_website("http://www.pge.com/about/edusafety/dcpp/index.jsp")
 
+
+# for each tower, create or append to file
+# write a line of data to file
 for row in web_data:
   tower = met_towers[row[0]]
   file_path = os.path.join(folder_path, tower + '.obs')
+  
+  # check to see if file exists
+  if os.path.isfile(file_path):
+    new_file = False
+  else:
+    new_file = True
+  
   f = open(file_path, 'a')
+  # write column header if file is
+  if new_file:
+    f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb)\n")
+
+  # write formatted data to file
   data_str = parse_row(row)
-  print (data_str)
-  f.write(data_str)
+  f.write(data_str + "\n")
   f.close()
