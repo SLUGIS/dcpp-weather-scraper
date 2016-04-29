@@ -5,19 +5,23 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 met_towers = { 
-  "Point Buchon" : "PBBC",
-  "Los Osos Cemetery" : "LOC",
-  "Foothill" : "F",
-  "Service Center" : "SC",
-  "Energy Education Center" : "EEC",
-  "Davis Peak" : "DP",
-  "Grover Beach" : "GB" 
+  "Point Buchon" : "DCPTB",
+  "Los Osos Cemetery" : "DCLOC",
+  "Foothill" : "DCFH ",
+  "Service Center" : "DCSC",
+  "Energy Education Center" : "DCEEC",
+  "Davis Peak" : "DCDP",
+  "Grover Beach" : "DCGB"
 }
 
 
 # converts a string of m/s to a string of mph
 def parse_wind_speed(speed):
   val = round(float(speed) * 2.23694, 0)
+
+  if val < 0:
+    return "invalid wind"
+    
   return str(int(val))
 
 
@@ -35,12 +39,11 @@ def parse_row(row):
   date_object = datetime.strptime(row[3], "%I:%M%p, %A, %B %d, %Y")
   date_str = (datetime.strftime(date_object, "%m/%d/%Y,%H:%M"))
   
-  s = ","
-  seq = (date_str, "NA", "NA", parse_wind_dir(row[2]), parse_wind_speed(row[1]),
-    "NA", "NA", "NA")
-  data = s.join(seq)
-  print (data)
-  return data
+  seq = (date_str, "-99", "-99", parse_wind_dir(row[2]), parse_wind_speed(row[1]),
+    "-99", "-99", "-99")
+  
+  print (seq)
+  return seq
 
 
 
@@ -111,6 +114,12 @@ for row in web_data:
     f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb)\n")
 
   # write formatted data to file
-  data_str = parse_row(row)
-  f.write(data_str + "\n")
-  f.close()
+  row_list = parse_row(row)
+  
+  if row_list[4] == "invalid wind":
+    print ("invalid wind found")
+  else:
+    s = ","
+    row_str = s.join(row_list)
+    f.write(row_str + "\n")
+    f.close()
