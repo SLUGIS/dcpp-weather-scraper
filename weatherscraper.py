@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 met_towers = { 
   "Point Buchon" : "DCPTB",
   "Los Osos Cemetery" : "DCLOC",
-  "Foothill" : "DCFH ",
+  "Foothill" : "DCFH",
   "Service Center" : "DCSC",
   "Energy Education Center" : "DCEEC",
   "Davis Peak" : "DCDP",
