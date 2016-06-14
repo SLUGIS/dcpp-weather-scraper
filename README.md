@@ -4,7 +4,7 @@ This project was done in collaboration with SLO OES. The weatherscraper.py file 
 
 In order to make this script easy to run, it is packaged with [pyinstaller] into an installer file. The created folder in the dist directory can then be distributed and run without any external dependencies.
 
-If you manage to install pyinstaller simply build the .exe by running: `pyinstaller weathergrabber.py`
+If you manage to install pyinstaller simply build the .exe by running: `pyinstaller weatherscraper.py`
 
 [pyinstaller]: <http://pythonhosted.org/PyInstaller/>
 [target site]: <http://www.pge.com/about/edusafety/dcpp/index.jsp>
