@@ -28,6 +28,15 @@ def parse_wind_speed(speed):
 # rounds wind direction degrees and removes decimal places
 def parse_wind_dir(dir):
   val = round(float(dir), 0)
+  
+  if val < 0:
+    print ("wind below 0")
+    return "invalid wind dir"
+    
+  if val > 360:
+    print ("wind above 360")
+    return "invalid wind dir"
+    
   return str(int(val))
 
 
@@ -116,7 +125,9 @@ for row in web_data:
   # write formatted data to file
   row_list = parse_row(row)
   
-  if row_list[4] == "invalid wind":
+  if row_list[3] == "invalid wind dir":
+    print ("invalid wind dir found")
+  elif row_list[4] == "invalid wind":
     print ("invalid wind found")
   else:
     s = ","
