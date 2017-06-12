@@ -58,7 +58,7 @@ def parse_row(row):
 # returns data table of elements found at given url
 def parse_website(url):
     # open website
-    response = urllib.request.urlopen(url)
+    response = urllib2.urlopen(url)
     html_doc = response.read()
 
     # parse using BeautifulSoup
@@ -105,8 +105,8 @@ def main():
     web_data = parse_website("http://www.pge.com/about/edusafety/dcpp/index.jsp")
 
 
-# for each tower, create or append to file
-# write a line of data to file
+    # for each tower, create or append to file
+    # write a line of data to file
     for row in web_data:
       tower = met_towers[row[0]]
       file_path = os.path.join(folder_path, tower + '.obs')
