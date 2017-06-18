@@ -61,7 +61,7 @@ def parse_row(row):
             parse_wind_speed(row[table_columns["wind_speed_msec"]]),
             "-99", "-99", "-99", row[table_columns["stability_class"]].decode('utf-8'))
   
-    print (seq)
+    #print (seq)
     return seq
 
 
@@ -113,12 +113,12 @@ def main():
       os.makedirs(folder_path)
 
     web_data = parse_website("https://www.pge.com/about/edusafety/dcpp/index.jsp")
-    print(web_data)
+    #print(web_data)
 
     # for each tower, create or append to file
     # write a line of data to file
     for row in web_data:
-      tower = met_towers[row[1]]
+      tower = met_towers[row[table_columns["tower_name"]]]
       file_path = os.path.join(folder_path, tower + '.obs')
   
       # check to see if file exists
@@ -130,8 +130,8 @@ def main():
       f = open(file_path, 'a')
       # write column header if file is
       if new_file:
-        f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),\
-                wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb), stability (A-G)\n")
+        f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),")
+        f.write("wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb), stability (A-G)\n")
 
       # write formatted data to file
       row_list = parse_row(row)
