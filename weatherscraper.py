@@ -1,7 +1,7 @@
 import os.path
 import datetime
 from datetime import datetime
-import urllib.request
+import urllib2
 from bs4 import BeautifulSoup
 
 met_towers = { 
@@ -14,6 +14,15 @@ met_towers = {
   "Grover Beach" : "DCGB"
 }
 
+table_columns = {
+    "tower_index" : 0,
+    "tower_name" : 1,
+    "wind_dir" : 2,
+    "wind_speed_msec" : 3,
+    "wind_speed_mph" : 4,
+    "stability_class" : 5,
+    "last_update" : 6
+}
 
 # converts a string of m/s to a string of mph
 def parse_wind_speed(speed):
@@ -45,11 +54,12 @@ def parse_wind_dir(dir):
 # [Wind speed MPH],[sky conditions (%)],[weather],[station pressure (mb)]
 def parse_row(row):
   
-    date_object = datetime.strptime(row[3], "%I:%M%p, %A, %B %d, %Y")
+    date_object = datetime.strptime(row[table_columns["last_update"]], "%I:%M%p, %A, %B %d, %Y")
     date_str = (datetime.strftime(date_object, "%m/%d/%Y,%H:%M"))
   
-    seq = (date_str, "-99", "-99", parse_wind_dir(row[2]), parse_wind_speed(row[1]),
-    "-99", "-99", "-99")
+    seq = (date_str, "-99", "-99", parse_wind_dir(row[table_columns["wind_dir"]]), 
+            parse_wind_speed(row[table_columns["wind_speed_msec"]]),
+            "-99", "-99", "-99", row[table_columns["stability_class"]].decode('utf-8'))
   
     print (seq)
     return seq
@@ -102,13 +112,13 @@ def main():
     if not os.path.exists(folder_path):
       os.makedirs(folder_path)
 
-    web_data = parse_website("http://www.pge.com/about/edusafety/dcpp/index.jsp")
-
+    web_data = parse_website("https://www.pge.com/about/edusafety/dcpp/index.jsp")
+    print(web_data)
 
     # for each tower, create or append to file
     # write a line of data to file
     for row in web_data:
-      tower = met_towers[row[0]]
+      tower = met_towers[row[1]]
       file_path = os.path.join(folder_path, tower + '.obs')
   
       # check to see if file exists
@@ -120,14 +130,15 @@ def main():
       f = open(file_path, 'a')
       # write column header if file is
       if new_file:
-        f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb)\n")
+        f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),\
+                wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb), stability (A-G)\n")
 
       # write formatted data to file
       row_list = parse_row(row)
       
-      if row_list[3] == "invalid wind dir":
+      if row_list[table_columns["wind_dir"]] == "invalid wind dir":
         print ("invalid wind dir found")
-      elif row_list[4] == "invalid wind":
+      elif row_list[table_columns["wind_speed_msec"]] == "invalid wind":
         print ("invalid wind found")
       else:
         s = ","

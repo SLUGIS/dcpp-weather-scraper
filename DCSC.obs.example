@@ -1,0 +1,2 @@
+date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb), stability (A-G)
+05/19/2017,17:00,-99,-99,328,11,-99,-99,-99,C
