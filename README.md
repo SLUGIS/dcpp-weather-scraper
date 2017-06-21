@@ -8,3 +8,9 @@ If you manage to install pyinstaller simply build the .exe by running: `pyinstal
 
 [pyinstaller]: <http://pythonhosted.org/PyInstaller/>
 [target site]: <http://www.pge.com/about/edusafety/dcpp/index.jsp>
+
+
+Dependencies:
+
+BeautifulSoup4 https://pypi.python.org/pypi/beautifulsoup4
+PyInstaller https://pypi.python.org/pypi/PyInstaller/3.0
