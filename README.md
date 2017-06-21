@@ -12,5 +12,5 @@ If you manage to install pyinstaller simply build the .exe by running: `pyinstal
 
 Dependencies:
 
-..* BeautifulSoup4 https://pypi.python.org/pypi/beautifulsoup4
-..* PyInstaller https://pypi.python.org/pypi/PyInstaller/3.0
+* BeautifulSoup4 https://pypi.python.org/pypi/beautifulsoup4
+* PyInstaller https://pypi.python.org/pypi/PyInstaller/3.0
