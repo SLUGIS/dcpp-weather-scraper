@@ -5,23 +5,23 @@ import urllib2
 from bs4 import BeautifulSoup
 
 met_towers = { 
-  "Point Buchon" : "DCPTB",
-  "Los Osos Cemetery" : "DCLOC",
-  "Foothill" : "DCFH",
-  "Service Center" : "DCSC",
+  "Point Buchon"            : "DCPTB",
+  "Los Osos Cemetery"       : "DCLOC",
+  "Foothill"                : "DCFH",
+  "Service Center"          : "DCSC",
   "Energy Education Center" : "DCEEC",
-  "Davis Peak" : "DCDP",
-  "Grover Beach" : "DCGB"
+  "Davis Peak"              : "DCDP",
+  "Grover Beach"            : "DCGB"
 }
 
 table_columns = {
-    "tower_index" : 0,
-    "tower_name" : 1,
-    "wind_dir" : 2,
-    "wind_speed_msec" : 3,
-    "wind_speed_mph" : 4,
-    "stability_class" : 5,
-    "last_update" : 6
+    "tower_index"       : 0,
+    "tower_name"        : 1,
+    "wind_dir"          : 2,
+    "wind_speed_msec"   : 3,
+    "wind_speed_mph"    : 4,
+    "stability_class"   : 5,
+    "last_update"       : 6
 }
 
 # converts a string of m/s to a string of mph
@@ -145,6 +145,7 @@ def main():
         row_str = s.join(row_list)
         f.write(row_str + "\n")
         f.close()
+
 
 if __name__ == "__main__":
         main()
