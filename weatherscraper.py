@@ -49,6 +49,26 @@ def parse_wind_dir(dir):
     return str(int(val))
 
 
+# Reads the file to determine if the website data hasn't changed
+# since last run of script
+def is_new_data(file_path, row_str):
+
+    f = open(file_path, 'r')
+    for line in f:
+        pass
+    last = line
+
+    old_date = last[0:16]
+    new_date = row_str[0:16]
+
+    if old_date == new_date:
+        return False
+
+    print(old_date)
+    print(new_date)
+
+    return True
+
 # returns data to be written to .obs file
 # mm/dd/yyyy,hh:mm,[Temp F],[Dew Point F],[Wind Direction Degrees] 
 # [Wind speed MPH],[sky conditions (%)],[weather],[station pressure (mb)]
@@ -110,7 +130,7 @@ def main():
 
     # creates directory if not already made
     if not os.path.exists(folder_path):
-      os.makedirs(folder_path)
+        os.makedirs(folder_path)
 
     web_data = parse_website("https://www.pge.com/about/edusafety/dcpp/index.jsp")
     #print(web_data)
@@ -118,33 +138,35 @@ def main():
     # for each tower, create or append to file
     # write a line of data to file
     for row in web_data:
-      tower = met_towers[row[table_columns["tower_name"]]]
-      file_path = os.path.join(folder_path, tower + '.obs')
+        tower = met_towers[row[table_columns["tower_name"]]]
+        file_path = os.path.join(folder_path, tower + '.obs')
   
       # check to see if file exists
-      if os.path.isfile(file_path):
+    if os.path.isfile(file_path):
         new_file = False
-      else:
+    else:
         new_file = True
   
-      f = open(file_path, 'a')
-      # write column header if file is
-      if new_file:
+    f = open(file_path, 'a')
+    # write column header if file is
+    if new_file:
         f.write("date (mm/dd/yyyy),time (hh:mm),temperature (F),dew point (F),")
         f.write("wind direction (deg),wind speed (mph),sky conditions (%),weather,station pressure (mb), stability (A-G)\n")
 
-      # write formatted data to file
-      row_list = parse_row(row)
+    # write formatted data to file
+    row_list = parse_row(row)
       
-      if row_list[table_columns["wind_dir"]] == "invalid wind dir":
+    if row_list[table_columns["wind_dir"]] == "invalid wind dir":
         print ("invalid wind dir found")
-      elif row_list[table_columns["wind_speed_msec"]] == "invalid wind":
+    elif row_list[table_columns["wind_speed_msec"]] == "invalid wind":
         print ("invalid wind found")
-      else:
+    else:
         s = ","
         row_str = s.join(row_list)
+        
+    if is_new_data(file_path, row_str):
         f.write(row_str + "\n")
-        f.close()
+    f.close()
 
 
 if __name__ == "__main__":
